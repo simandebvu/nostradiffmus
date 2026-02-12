@@ -6,8 +6,14 @@ type HookType = "pre-commit" | "pre-push";
 
 const getGitRoot = (): string => {
   const result = spawnSync("git", ["rev-parse", "--git-dir"], {
-    encoding: "utf-8"
+    encoding: "utf-8",
+    timeout: 5000, // 5 second timeout for git commands
+    killSignal: "SIGTERM"
   });
+
+  if (result.signal === "SIGTERM" || (result.error && result.error.message.includes("SIGTERM"))) {
+    throw new Error("Git command timed out. Check your git repository status.");
+  }
 
   if (result.status !== 0) {
     throw new Error("Not in a git repository. Run this command from inside a git repo.");

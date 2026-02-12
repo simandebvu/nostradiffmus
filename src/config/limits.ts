@@ -5,13 +5,17 @@ export interface DiffLimits {
   maxCopilotChars: number;
   maxLinesProcessed: number;
   warnThreshold: number;
+  gitTimeoutMs: number;
+  analysisTimeoutMs: number;
 }
 
 export const DEFAULT_LIMITS: DiffLimits = {
   maxDiffChars: 500_000,      // Hard limit - reject diffs larger than this
   maxCopilotChars: 4_000,     // Characters sent to Copilot
   maxLinesProcessed: 10_000,  // For signal extraction
-  warnThreshold: 100_000      // Warn user at this size
+  warnThreshold: 100_000,     // Warn user at this size
+  gitTimeoutMs: 30_000,       // Git command timeout (30 seconds)
+  analysisTimeoutMs: 60_000   // Overall analysis timeout (60 seconds)
 };
 
 const parseEnvInt = (key: string, defaultValue: number): number => {
@@ -42,6 +46,14 @@ export const getLimits = (): DiffLimits => {
     warnThreshold: parseEnvInt(
       "NOSTRADIFFMUS_WARN_THRESHOLD",
       fileConfig.warnThreshold ?? DEFAULT_LIMITS.warnThreshold
+    ),
+    gitTimeoutMs: parseEnvInt(
+      "NOSTRADIFFMUS_GIT_TIMEOUT_MS",
+      DEFAULT_LIMITS.gitTimeoutMs
+    ),
+    analysisTimeoutMs: parseEnvInt(
+      "NOSTRADIFFMUS_ANALYSIS_TIMEOUT_MS",
+      DEFAULT_LIMITS.analysisTimeoutMs
     )
   };
 };

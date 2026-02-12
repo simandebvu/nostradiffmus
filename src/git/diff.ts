@@ -2,13 +2,26 @@ import { spawnSync } from "node:child_process";
 import { CliOptions } from "../types";
 import { getLimits } from "../config/limits";
 
-const runGit = (args: string[]): string => {
+const runGit = (args: string[], timeoutMs: number): string => {
   const result = spawnSync("git", args, {
-    encoding: "utf-8"
+    encoding: "utf-8",
+    timeout: timeoutMs,
+    killSignal: "SIGTERM"
   });
 
   if (result.error) {
+    if (result.error.message.includes("SIGTERM")) {
+      throw new Error(
+        `Git command timed out after ${timeoutMs}ms. Try increasing NOSTRADIFFMUS_GIT_TIMEOUT_MS.`
+      );
+    }
     throw new Error(`Failed to run git: ${result.error.message}`);
+  }
+
+  if (result.signal === "SIGTERM") {
+    throw new Error(
+      `Git command timed out after ${timeoutMs}ms. Try increasing NOSTRADIFFMUS_GIT_TIMEOUT_MS.`
+    );
   }
 
   if (result.status !== 0) {
@@ -20,11 +33,11 @@ const runGit = (args: string[]): string => {
 };
 
 export const getDiff = (options: CliOptions): string => {
-  const diff = options.commit
-    ? runGit(["show", "--format=", "--no-color", options.commit])
-    : runGit(["diff", "--staged", "--no-color"]);
-
   const limits = getLimits();
+
+  const diff = options.commit
+    ? runGit(["show", "--format=", "--no-color", options.commit], limits.gitTimeoutMs)
+    : runGit(["diff", "--staged", "--no-color"], limits.gitTimeoutMs);
 
   if (diff.length > limits.maxDiffChars) {
     throw new Error(

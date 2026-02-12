@@ -44,6 +44,7 @@ ENVIRONMENT VARIABLES
   NOSTRADIFFMUS_WARN_THRESHOLD=100000     Warn when diff exceeds size (chars)
   NOSTRADIFFMUS_MAX_DIFF_CHARS=500000     Maximum diff size before rejection
   NOSTRADIFFMUS_COPILOT_CHARS=4000        Max chars sent to Copilot
+  NOSTRADIFFMUS_GIT_TIMEOUT_MS=30000      Git command timeout (milliseconds)
   NOSTRADIFFMUS_USE_COPILOT=1             Enable/disable Copilot (1/0)
   NOSTRADIFFMUS_DEBUG=1                   Enable debug logging
 
