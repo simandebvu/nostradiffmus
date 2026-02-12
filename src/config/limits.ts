@@ -1,3 +1,5 @@
+import { loadFileConfig } from "./fileConfig";
+
 export interface DiffLimits {
   maxDiffChars: number;
   maxCopilotChars: number;
@@ -20,9 +22,26 @@ const parseEnvInt = (key: string, defaultValue: number): number => {
   return Number.isFinite(parsed) && parsed > 0 ? parsed : defaultValue;
 };
 
-export const getLimits = (): DiffLimits => ({
-  maxDiffChars: parseEnvInt("NOSTRADIFFMUS_MAX_DIFF_CHARS", DEFAULT_LIMITS.maxDiffChars),
-  maxCopilotChars: parseEnvInt("NOSTRADIFFMUS_COPILOT_CHARS", DEFAULT_LIMITS.maxCopilotChars),
-  maxLinesProcessed: parseEnvInt("NOSTRADIFFMUS_MAX_LINES", DEFAULT_LIMITS.maxLinesProcessed),
-  warnThreshold: parseEnvInt("NOSTRADIFFMUS_WARN_THRESHOLD", DEFAULT_LIMITS.warnThreshold)
-});
+export const getLimits = (): DiffLimits => {
+  // Priority: env vars > file config > defaults
+  const fileConfig = loadFileConfig();
+
+  return {
+    maxDiffChars: parseEnvInt(
+      "NOSTRADIFFMUS_MAX_DIFF_CHARS",
+      fileConfig.maxDiffChars ?? DEFAULT_LIMITS.maxDiffChars
+    ),
+    maxCopilotChars: parseEnvInt(
+      "NOSTRADIFFMUS_COPILOT_CHARS",
+      fileConfig.copilotChars ?? DEFAULT_LIMITS.maxCopilotChars
+    ),
+    maxLinesProcessed: parseEnvInt(
+      "NOSTRADIFFMUS_MAX_LINES",
+      DEFAULT_LIMITS.maxLinesProcessed
+    ),
+    warnThreshold: parseEnvInt(
+      "NOSTRADIFFMUS_WARN_THRESHOLD",
+      fileConfig.warnThreshold ?? DEFAULT_LIMITS.warnThreshold
+    )
+  };
+};

@@ -4,6 +4,7 @@ import { parseArgs, getUsageText } from "./cli/args";
 import { runAnalysis } from "./core/runAnalysis";
 import { renderProphecy } from "./output/prophecy";
 import { toJson } from "./output/json";
+import { installHook, uninstallHook } from "./hooks/install";
 
 const main = (): void => {
   try {
@@ -11,6 +12,16 @@ const main = (): void => {
 
     if (options.help) {
       console.log(getUsageText());
+      return;
+    }
+
+    if (options.installHook) {
+      installHook(options.installHook);
+      return;
+    }
+
+    if (options.uninstallHook) {
+      uninstallHook(options.uninstallHook);
       return;
     }
 

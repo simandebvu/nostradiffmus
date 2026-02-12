@@ -106,18 +106,27 @@ Configuration Regressions
 
 🛠 Installation
 
-Using Node.js (v18+):
+### Global Installation (Recommended)
 
+```bash
+npm install -g nostradiffmus
+```
+
+### Local Development
+
+```bash
+git clone https://github.com/yourusername/nostradiffmus.git
+cd nostradiffmus
 npm install
 npm run build
+npm link  # Use globally on your machine
+```
 
-Run locally:
+### NPX (No Installation)
 
-npm run dev -- --staged
-
-Or if published:
-
-npm install -g nostradiffmus
+```bash
+npx nostradiffmus --staged
+```
 
 🏃 Usage
 

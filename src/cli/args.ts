@@ -1,28 +1,86 @@
 import { CliOptions, TONES, Tone } from "../types";
+import { loadFileConfig } from "../config/fileConfig";
 
 const usageText = `
-Nostradiffmus — Predict likely bug categories from your git diff.
+🔮 Nostradiffmus — Predict bugs before they manifest
 
-Usage:
-  nostradiffmus [--staged] [--commit <hash>] [--tone <mode>] [--json] [--quiet]
+Analyzes git diffs to predict likely bug categories using pattern recognition
+and optional GitHub Copilot integration. Get dramatic prophecies and actionable
+technical advice before you commit.
 
-Options:
-  --staged           Analyze staged changes only (default when no --commit is passed)
-  --commit <hash>    Analyze a specific commit via git show
-  --tone <mode>      tragic | cryptic | sarcastic | biblical | clinical
-  --json             Output structured JSON
-  --quiet            Suppress prophecy text and print only category + advice
-  --help, -h         Show this help
+USAGE
+  nostradiffmus [options]
+
+OPTIONS
+  --staged              Analyze staged changes (default)
+  --commit <hash>       Analyze specific commit (e.g., HEAD~1)
+  --tone <mode>         Prophecy style: tragic, cryptic, sarcastic, biblical, clinical
+  --json                Output structured JSON (great for CI/CD)
+  --quiet               Suppress prophecy, show only category + advice
+  --install-hook [type] Install git hook (pre-commit or pre-push, default: pre-commit)
+  --uninstall-hook [type] Uninstall git hook
+  --help, -h            Show this help
+
+EXAMPLES
+  # Analyze staged changes with dramatic prophecy
+  nostradiffmus
+
+  # Check a specific commit with sarcastic tone
+  nostradiffmus --commit HEAD~1 --tone sarcastic
+
+  # Get JSON output for CI/CD pipeline
+  nostradiffmus --staged --json | jq '.predictedBugCategory'
+
+  # Quiet mode for minimal output
+  nostradiffmus --quiet
+
+  # Install as pre-commit hook (auto-run on every commit)
+  nostradiffmus --install-hook
+
+  # Install as pre-push hook
+  nostradiffmus --install-hook pre-push
+
+ENVIRONMENT VARIABLES
+  NOSTRADIFFMUS_WARN_THRESHOLD=100000     Warn when diff exceeds size (chars)
+  NOSTRADIFFMUS_MAX_DIFF_CHARS=500000     Maximum diff size before rejection
+  NOSTRADIFFMUS_COPILOT_CHARS=4000        Max chars sent to Copilot
+  NOSTRADIFFMUS_USE_COPILOT=1             Enable/disable Copilot (1/0)
+  NOSTRADIFFMUS_DEBUG=1                   Enable debug logging
+
+CONFIGURATION FILE
+  Create .nostradiffmus.json in your project root:
+  {
+    "warnThreshold": 100000,
+    "tone": "sarcastic",
+    "quiet": false
+  }
+
+BUG CATEGORIES
+  • AsyncStateRace       - Async operations with shared state mutations
+  • StateDrift           - Inconsistent state management patterns
+  • NullUndefinedAccess  - Missing null/undefined guards
+  • ValidationEdgeCases  - Validation logic gaps
+  • OffByOneErrors       - Index/boundary arithmetic issues
+  • IncompleteRefactors  - Large structural changes without tests
+  • TestCoverageGaps     - Code changes without test updates
+  • ConfigurationRegressions - Config file modifications
+
+LEARN MORE
+  GitHub: https://github.com/yourusername/nostradiffmus
+  Docs:   https://github.com/yourusername/nostradiffmus#readme
 `;
 
 export const getUsageText = (): string => usageText.trim();
 
 export const parseArgs = (argv: string[]): CliOptions => {
+  // Load defaults from config file (if exists)
+  const fileConfig = loadFileConfig();
+
   const options: CliOptions = {
     staged: true,
-    tone: "tragic",
+    tone: fileConfig.tone ?? "tragic",
     json: false,
-    quiet: false,
+    quiet: fileConfig.quiet ?? false,
     help: false
   };
 
@@ -46,6 +104,34 @@ export const parseArgs = (argv: string[]): CliOptions => {
 
     if (arg === "--quiet") {
       options.quiet = true;
+      continue;
+    }
+
+    if (arg === "--install-hook") {
+      const nextArg = argv[index + 1];
+      if (nextArg && !nextArg.startsWith("--")) {
+        if (nextArg !== "pre-commit" && nextArg !== "pre-push") {
+          throw new Error("--install-hook must be 'pre-commit' or 'pre-push'");
+        }
+        options.installHook = nextArg;
+        index += 1;
+      } else {
+        options.installHook = "pre-commit";
+      }
+      continue;
+    }
+
+    if (arg === "--uninstall-hook") {
+      const nextArg = argv[index + 1];
+      if (nextArg && !nextArg.startsWith("--")) {
+        if (nextArg !== "pre-commit" && nextArg !== "pre-push") {
+          throw new Error("--uninstall-hook must be 'pre-commit' or 'pre-push'");
+        }
+        options.uninstallHook = nextArg;
+        index += 1;
+      } else {
+        options.uninstallHook = "pre-commit";
+      }
       continue;
     }
 

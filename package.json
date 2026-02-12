@@ -3,21 +3,44 @@
   "version": "0.1.0",
   "description": "Predict likely bug categories from git diffs with dramatic prophecies and practical advice.",
   "type": "commonjs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "bin": {
     "nostradiffmus": "dist/cli.js"
   },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "dev": "tsx src/cli.ts",
-    "test": "vitest run"
+    "test": "vitest run",
+    "prepublishOnly": "npm test && npm run build"
   },
   "keywords": [
     "cli",
     "git",
     "diff",
     "developer-tools",
-    "analysis"
+    "analysis",
+    "bug-prediction",
+    "code-quality",
+    "ai",
+    "copilot",
+    "static-analysis",
+    "devex"
   ],
+  "author": "Your Name <your.email@example.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/nostradiffmus.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/nostradiffmus/issues"
+  },
+  "homepage": "https://github.com/yourusername/nostradiffmus#readme",
   "license": "MIT",
   "engines": {
     "node": ">=18"

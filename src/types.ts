@@ -30,6 +30,8 @@ export interface CliOptions {
   json: boolean;
   quiet: boolean;
   help: boolean;
+  installHook?: "pre-commit" | "pre-push";
+  uninstallHook?: "pre-commit" | "pre-push";
 }
 
 export interface Signal {

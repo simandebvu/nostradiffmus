@@ -1,0 +1,8 @@
+{
+  "warnThreshold": 100000,
+  "maxDiffChars": 500000,
+  "copilotChars": 4000,
+  "tone": "sarcastic",
+  "quiet": false,
+  "useCopilot": true
+}
