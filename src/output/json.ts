@@ -6,7 +6,8 @@ export const toJson = (prediction: Prediction): string => {
       predictedBugCategory: prediction.predictedBugCategory,
       confidence: prediction.confidence,
       signals: prediction.signals,
-      advice: prediction.advice
+      advice: prediction.advice,
+      metadata: prediction.metadata
     },
     null,
     2

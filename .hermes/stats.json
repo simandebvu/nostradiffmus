@@ -1,0 +1,20 @@
+{
+  "totalCommands": 1,
+  "totalGitCommands": 0,
+  "totalTimeSaved": 60,
+  "commandHistory": [
+    {
+      "timestamp": 1770916940264,
+      "command": "start",
+      "args": [
+        "diff breakdown"
+      ],
+      "duration": 2.218,
+      "success": false,
+      "gitCommandsRun": 0,
+      "timeSaved": 60
+    }
+  ],
+  "startDate": 1770916940264,
+  "lastUsed": 1770916940264
+}

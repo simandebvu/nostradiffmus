@@ -1,4 +1,6 @@
 import { spawnSync } from "node:child_process";
+import { getLimits } from "../config/limits";
+import { truncateDiff } from "../git/diff";
 
 const hasCommand = (command: string, args: string[]): boolean => {
   const probe = spawnSync(command, args, { encoding: "utf-8" });
@@ -63,10 +65,14 @@ export const maybeGetCopilotEnrichment = (diff: string): string | undefined => {
     return undefined;
   }
 
+  const limits = getLimits();
+  const { truncated, wasTruncated } = truncateDiff(diff, limits.maxCopilotChars);
+
   const prompt = [
     "Analyze this git diff and provide a concise bug-risk advisory in 1-2 sentences:",
-    diff.slice(0, 4000)
-  ].join("\n\n");
+    wasTruncated ? "[Note: Diff truncated for size]" : "",
+    truncated
+  ].filter(Boolean).join("\n\n");
 
   const promptArgs = ["-p", prompt, "--allow-all-tools", "--no-ask-user", "--stream", "off", "--no-color", "-s"];
   debugLog(`using timeout=${resolveTimeoutMs()}ms`);
