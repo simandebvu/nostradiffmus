@@ -1,0 +1,31 @@
+{
+  "name": "nostradiffmus",
+  "version": "0.1.0",
+  "description": "Predict likely bug categories from git diffs with dramatic prophecies and practical advice.",
+  "type": "commonjs",
+  "bin": {
+    "nostradiffmus": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx src/cli.ts",
+    "test": "vitest run"
+  },
+  "keywords": [
+    "cli",
+    "git",
+    "diff",
+    "developer-tools",
+    "analysis"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.4",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.8"
+  }
+}

@@ -1,4 +1,4 @@
-🔮 Nostradiffmus
+# 🔮 Nostradiffmus
 
 Predict your next bug before it manifests.
 
@@ -106,15 +106,18 @@ Configuration Regressions
 
 🛠 Installation
 
-Using Bun:
+Using Node.js (v18+):
 
-bun install
-bun run build
+npm install
+npm run build
 
+Run locally:
+
+npm run dev -- --staged
 
 Or if published:
 
-bun add -g nostradiffmus
+npm install -g nostradiffmus
 
 🏃 Usage
 
@@ -146,12 +149,15 @@ biblical
 clinical
 
 ⚙️ CLI Options
-Flag	Description
---staged	Analyze staged changes only
---commit <hash>	Analyze a specific commit
---tone <mode>	Change prophecy style
---json	Output structured JSON (for CI integration)
---quiet	Suppress dramatic output, show only advice
+
+| Flag | Description |
+| --- | --- |
+| --staged | Analyze staged changes only (default when no --commit is provided) |
+| --commit \<hash\> | Analyze a specific commit |
+| --tone \<mode\> | Change prophecy style |
+| --json | Output structured JSON (for CI integration) |
+| --quiet | Suppress dramatic output, show only advice (ignored when --json is set) |
+
 🔌 GitHub Copilot CLI Integration
 
 Nostradiffmus can optionally use GitHub Copilot CLI to:
@@ -163,6 +169,14 @@ Assess architectural drift
 Generate richer context-aware guidance
 
 This makes it ideal for hackathon submissions exploring AI-assisted developer workflows.
+
+Copilot enrichment is enabled by default when GitHub CLI Copilot is available.
+
+If Copilot CLI is not installed or not authenticated, Nostradiffmus automatically falls back to local heuristic analysis.
+
+To disable it explicitly:
+
+NOSTRADIFFMUS_USE_COPILOT=0 nostradiffmus --staged
 
 📦 Example JSON Output
 {
