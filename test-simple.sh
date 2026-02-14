@@ -154,8 +154,8 @@ rm massive-test.ts
 echo -e "\n${YELLOW}Test 6: Unit tests${NC}"
 TEST_OUTPUT=$(npm test 2>&1)
 
-if echo "$TEST_OUTPUT" | grep -q "9 passed"; then
-    echo -e "${GREEN}✅ All 9 unit tests pass${NC}"
+if echo "$TEST_OUTPUT" | grep -q "12 passed"; then
+    echo -e "${GREEN}✅ All 12 unit tests pass${NC}"
 else
     echo -e "${RED}❌ Unit tests failed${NC}"
     echo "$TEST_OUTPUT"
