@@ -9,21 +9,19 @@ const runGit = (args: string[], timeoutMs: number): string => {
     killSignal: "SIGTERM"
   });
 
-  if (result.error) {
-    if (result.error.message.includes("SIGTERM")) {
-      throw new Error(
-        `Git command timed out after ${timeoutMs}ms. Try increasing NOSTRADIFFMUS_GIT_TIMEOUT_MS.`
-      );
-    }
-    throw new Error(`Failed to run git: ${result.error.message}`);
-  }
-
-  if (result.signal === "SIGTERM") {
+  // Treat any SIGTERM (signal or error message) as a timeout
+  if (
+    result.signal === "SIGTERM" ||
+    (result.error && result.error.message.includes("SIGTERM"))
+  ) {
     throw new Error(
       `Git command timed out after ${timeoutMs}ms. Try increasing NOSTRADIFFMUS_GIT_TIMEOUT_MS.`
     );
   }
 
+  if (result.error) {
+    throw new Error(`Failed to run git: ${result.error.message}`);
+  }
   if (result.status !== 0) {
     const message = result.stderr?.trim() || "Unknown git error";
     throw new Error(message);
