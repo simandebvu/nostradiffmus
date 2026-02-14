@@ -83,6 +83,17 @@ export const truncateDiff = (diff: string, maxChars: number): TruncationResult =
 
   // Strategy: Keep file headers + representative samples from each file
   const fileSections = diff.split(/(?=^diff --git)/m).filter((section) => section.trim());
+
+  // Fallback: if no file sections were detected, perform a simple truncation
+  if (fileSections.length === 0) {
+    const truncated = diff.slice(0, maxChars);
+    return {
+      truncated,
+      wasTruncated: true,
+      originalSize: diff.length,
+      truncatedSize: truncated.length
+    };
+  }
   const results: string[] = [];
   let totalChars = 0;
   const charsPerFile = Math.floor(maxChars / fileSections.length);
