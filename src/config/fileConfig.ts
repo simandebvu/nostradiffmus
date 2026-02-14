@@ -50,7 +50,7 @@ const validateConfig = (config: FileConfig): void => {
   const numericFields = ["warnThreshold", "maxDiffChars", "copilotChars"] as const;
   for (const field of numericFields) {
     if (config[field] !== undefined && (!Number.isFinite(config[field]) || config[field]! < 0)) {
-      throw new Error(`Invalid ${field} in config: must be a positive number`);
+      throw new Error(`Invalid ${field} in config: must be a non-negative number`);
     }
   }
 };
