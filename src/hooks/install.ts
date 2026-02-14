@@ -49,10 +49,17 @@ exit 0
 echo "🔮 Analyzing recent commits before push..."
 echo ""
 
-# Analyze the diff between origin and HEAD
+# Analyze commits that are about to be pushed
 REMOTE_BRANCH=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null || echo "origin/main")
 
-if ! git diff "$REMOTE_BRANCH"...HEAD | npx nostradiffmus --quiet 2>/dev/null; then
+STATUS=0
+for COMMIT in $(git rev-list "$REMOTE_BRANCH"..HEAD); do
+  if ! npx nostradiffmus --commit "$COMMIT" --quiet 2>/dev/null; then
+    STATUS=1
+  fi
+done
+
+if [ "$STATUS" -ne 0 ]; then
   echo ""
   echo "⚠️  High-risk changes detected in commits being pushed."
   echo "Consider reviewing the prophecy above."
