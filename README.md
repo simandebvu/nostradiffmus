@@ -115,7 +115,7 @@ npm install -g nostradiffmus
 ### Local Development
 
 ```bash
-git clone https://github.com/yourusername/nostradiffmus.git
+git clone https://github.com/simandebvu/nostradiffmus.git
 cd nostradiffmus
 npm install
 npm run build

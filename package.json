@@ -35,12 +35,12 @@
   "author": "Your Name <your.email@example.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/nostradiffmus.git"
+    "url": "https://github.com/simandebvu/nostradiffmus.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/nostradiffmus/issues"
+    "url": "https://github.com/simandebvu/nostradiffmus/issues"
   },
-  "homepage": "https://github.com/yourusername/nostradiffmus#readme",
+  "homepage": "https://github.com/simandebvu/nostradiffmus#readme",
   "license": "MIT",
   "engines": {
     "node": ">=18"

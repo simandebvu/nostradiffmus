@@ -67,8 +67,8 @@ BUG CATEGORIES
   • ConfigurationRegressions - Config file modifications
 
 LEARN MORE
-  GitHub: https://github.com/yourusername/nostradiffmus
-  Docs:   https://github.com/yourusername/nostradiffmus#readme
+  GitHub: https://github.com/simandebvu/nostradiffmus
+  Docs:   https://github.com/simandebvu/nostradiffmus#readme
 `;
 
 export const getUsageText = (): string => usageText.trim();
