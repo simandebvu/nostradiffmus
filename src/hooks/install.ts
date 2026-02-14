@@ -1,4 +1,4 @@
-import { writeFileSync, existsSync, readFileSync, chmodSync } from "node:fs";
+import { writeFileSync, existsSync, readFileSync, chmodSync, unlinkSync } from "node:fs";
 import { resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 
@@ -140,13 +140,12 @@ export const uninstallHook = (type: HookType = "pre-commit"): void => {
       throw new Error("Uninstall aborted - hook not managed by Nostradiffmus");
     }
 
-    // Remove the hook (using spawn since we need to be safe)
-    const result = spawnSync("rm", [hookPath]);
-
-    if (result.status === 0) {
+    // Remove the hook file (cross-platform compatible)
+    try {
+      unlinkSync(hookPath);
       console.log(`✅ Successfully uninstalled Nostradiffmus ${type} hook`);
-    } else {
-      throw new Error("Failed to remove hook file");
+    } catch (unlinkError) {
+      throw new Error(`Failed to remove hook file: ${unlinkError instanceof Error ? unlinkError.message : String(unlinkError)}`);
     }
   } catch (error) {
     if (error instanceof Error) {

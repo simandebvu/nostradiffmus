@@ -177,6 +177,7 @@ Nostradiffmus can be configured via environment variables to handle large diffs:
 | `NOSTRADIFFMUS_COPILOT_CHARS` | 4000 | Maximum characters sent to Copilot for analysis |
 | `NOSTRADIFFMUS_MAX_LINES` | 10000 | Maximum lines processed during signal extraction |
 | `NOSTRADIFFMUS_WARN_THRESHOLD` | 100000 | Warn user when diff exceeds this size (in characters) |
+| `NOSTRADIFFMUS_GIT_TIMEOUT_MS` | 30000 | Git command timeout in milliseconds (30 seconds) |
 | `NOSTRADIFFMUS_USE_COPILOT` | 1 | Set to `0` to disable Copilot integration |
 | `NOSTRADIFFMUS_DEBUG` | - | Set to `1` to enable debug logging |
 
