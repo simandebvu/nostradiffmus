@@ -1,0 +1,18 @@
+{
+  "predictedBugCategory": "AsyncStateRace",
+  "confidence": 0.82,
+  "signals": [
+    "New async function introduced",
+    "Shared mutable state detected",
+    "Error handling removed or modified",
+    "Multiple await chains modified"
+  ],
+  "advice": "Review promise chains and shared state updates. You've introduced new async operations that access shared state without proper synchronization. Consider using locks or ensuring state updates are atomic. Check if error boundaries handle rejected promises correctly.",
+  "categoryLabel": "Async Race Conditions",
+  "metadata": {
+    "diffSizeChars": 2847,
+    "diffSizeKB": 2.8,
+    "wasTruncatedForCopilot": false,
+    "filesChanged": 3
+  }
+}

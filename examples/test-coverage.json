@@ -1,0 +1,18 @@
+{
+  "predictedBugCategory": "TestCoverageGaps",
+  "confidence": 0.88,
+  "signals": [
+    "Test files deleted or modified",
+    "Significant refactor without test updates",
+    "New functions added without corresponding tests",
+    "Coverage gaps detected in changed modules"
+  ],
+  "advice": "You've refactored core logic but haven't updated tests accordingly. The deleted test cases may have been covering important edge cases. Add tests for the new code paths and ensure refactored logic maintains the same contracts. Run coverage reports to identify gaps.",
+  "categoryLabel": "Test Coverage Gaps",
+  "metadata": {
+    "diffSizeChars": 5420,
+    "diffSizeKB": 5.3,
+    "wasTruncatedForCopilot": true,
+    "filesChanged": 7
+  }
+}

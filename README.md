@@ -1,8 +1,18 @@
-# 🔮 Nostradiffmus
+<div align="center">
+  <img src="nostra.png" alt="Nostradiffmus Banner" width="100%">
 
-Predict your next bug before it manifests.
+  # 🔮 Nostradiffmus
 
-Nostradiffmus reads your recent git diffs, predicts the most likely bug category you’re about to introduce, and delivers an absurdly dramatic prophecy… followed by real, actionable advice.
+  [![Test](https://github.com/simandebvu/nostradiffmus/actions/workflows/test.yml/badge.svg)](https://github.com/simandebvu/nostradiffmus/actions/workflows/test.yml)
+  [![npm version](https://img.shields.io/npm/v/nostradiffmus.svg)](https://www.npmjs.com/package/nostradiffmus)
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+  **Predict your next bug before it manifests.**
+</div>
+
+---
+
+Nostradiffmus reads your recent git diffs, predicts the most likely bug category you're about to introduce, and delivers an absurdly dramatic prophecy… followed by real, actionable advice.
 
 Because sometimes the future of your code is already written in the diff.
 
@@ -28,19 +38,50 @@ Generates a dramatic prophecy
 
 Provides grounded technical guidance
 
-Example output:
+## 📸 Example Output
 
+### Tragic Tone (Default)
+```
 🔮 Consulting the sacred diff scrolls...
 
-I foresee:
-• A race condition hiding in asynchronous shadows.
-• A test that trembles when CI winds change.
-• State that diverges quietly… then loudly.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         THE PROPHECY OF DOOM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-⚠ Likely Bug Category: Async State Synchronization
-🧠 Advice:
-You modified promise flow without updating error handling.
-Review await chains and shared state mutation.
+Hark! I peer into the abyss of your commit,
+And lo, darkness stirs within...
+
+⚡ A race condition sleeps in asynchronous shadows,
+   Waiting for the precise moment to awaken.
+
+⚡ Promises made but not kept—error paths abandoned,
+   Like a bridge half-built over turbulent waters.
+
+⚠ Likely Bug Category: Async Race Conditions
+🧠 Advice: Review promise chains and shared state updates.
+📊 Confidence: 82%
+```
+
+### JSON Output
+```json
+{
+  "predictedBugCategory": "AsyncStateRace",
+  "confidence": 0.82,
+  "signals": [
+    "New async function introduced",
+    "Shared mutable state detected"
+  ],
+  "advice": "Review promise chains and shared state updates...",
+  "metadata": {
+    "diffSizeChars": 2847,
+    "diffSizeKB": 2.8,
+    "wasTruncatedForCopilot": false,
+    "filesChanged": 3
+  }
+}
+```
+
+**See more examples in [examples/](./examples/) directory** including all tone variations and different bug categories!
 
 🚀 Why This Exists
 
@@ -206,25 +247,12 @@ To disable it explicitly:
 
 NOSTRADIFFMUS_USE_COPILOT=0 nostradiffmus --staged
 
-📦 Example JSON Output
-```json
-{
-  "predictedBugCategory": "AsyncStateRace",
-  "confidence": 0.78,
-  "signals": [
-    "New async function introduced",
-    "Shared mutable state detected",
-    "Error handling removed"
-  ],
-  "advice": "Review promise chains and shared state updates.",
-  "metadata": {
-    "diffSizeChars": 2847,
-    "diffSizeKB": 2.8,
-    "wasTruncatedForCopilot": false,
-    "filesChanged": 3
-  }
-}
-```
+📦 Examples & Documentation
+
+Check out the [examples/](./examples/) directory for:
+- Complete JSON output examples for each bug category
+- All 5 tone variations (tragic, cryptic, sarcastic, biblical, clinical)
+- Sample scenarios and use cases
 
 🧪 Future Ideas
 

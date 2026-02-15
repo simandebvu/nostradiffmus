@@ -1,0 +1,18 @@
+{
+  "predictedBugCategory": "ValidationEdgeCases",
+  "confidence": 0.71,
+  "signals": [
+    "Validation logic modified",
+    "Conditional branches added or removed",
+    "Type checking patterns changed",
+    "Input sanitization updated"
+  ],
+  "advice": "Your validation changes may miss edge cases like empty strings, null, undefined, or boundary values. Test with: empty inputs, very large inputs, special characters, and type coercion scenarios. Consider using a validation library with comprehensive edge case handling.",
+  "categoryLabel": "Validation Edge Cases",
+  "metadata": {
+    "diffSizeChars": 892,
+    "diffSizeKB": 0.9,
+    "wasTruncatedForCopilot": false,
+    "filesChanged": 1
+  }
+}

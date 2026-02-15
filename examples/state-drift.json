@@ -1,0 +1,18 @@
+{
+  "predictedBugCategory": "StateDrift",
+  "confidence": 0.75,
+  "signals": [
+    "State management code modified",
+    "Component lifecycle changes detected",
+    "Multiple setState patterns found",
+    "Cache or store logic updated"
+  ],
+  "advice": "Watch for state synchronization issues between components. Your changes to state management logic may cause UI and data layer to diverge. Ensure derived state is recalculated when dependencies change, and consider adding state consistency checks in development mode.",
+  "categoryLabel": "State Drift",
+  "metadata": {
+    "diffSizeChars": 1523,
+    "diffSizeKB": 1.5,
+    "wasTruncatedForCopilot": false,
+    "filesChanged": 2
+  }
+}
