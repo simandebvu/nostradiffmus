@@ -57,6 +57,6 @@ jobs:
         done > large-file.ts
 
         git add large-file.ts
-        npm run dev -- --staged --json | jq -e '.metadata.wasTruncatedForCopilot'
+        node dist/cli.js --staged --json | jq -e '.metadata.wasTruncatedForCopilot'
 
         echo "✅ Large diff test passed"
