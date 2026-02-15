@@ -30,6 +30,8 @@ export interface CliOptions {
   json: boolean;
   quiet: boolean;
   help: boolean;
+  installHook?: "pre-commit" | "pre-push";
+  uninstallHook?: "pre-commit" | "pre-push";
 }
 
 export interface Signal {
@@ -38,12 +40,20 @@ export interface Signal {
   weights: Partial<Record<BugCategory, number>>;
 }
 
+export interface DiffMetadata {
+  diffSizeChars: number;
+  diffSizeKB: number;
+  wasTruncatedForCopilot: boolean;
+  filesChanged: number;
+}
+
 export interface Prediction {
   predictedBugCategory: BugCategory;
   confidence: number;
   signals: string[];
   advice: string;
   categoryLabel: string;
+  metadata?: DiffMetadata;
 }
 
 export interface AnalysisContext {

@@ -106,18 +106,27 @@ Configuration Regressions
 
 🛠 Installation
 
-Using Node.js (v18+):
+### Global Installation (Recommended)
 
+```bash
+npm install -g nostradiffmus
+```
+
+### Local Development
+
+```bash
+git clone https://github.com/simandebvu/nostradiffmus.git
+cd nostradiffmus
 npm install
 npm run build
+npm link  # Use globally on your machine
+```
 
-Run locally:
+### NPX (No Installation)
 
-npm run dev -- --staged
-
-Or if published:
-
-npm install -g nostradiffmus
+```bash
+npx nostradiffmus --staged
+```
 
 🏃 Usage
 
@@ -158,6 +167,25 @@ clinical
 | --json | Output structured JSON (for CI integration) |
 | --quiet | Suppress dramatic output, show only advice (ignored when --json is set) |
 
+⚙️ Environment Variables
+
+Nostradiffmus can be configured via environment variables to handle large diffs:
+
+| Variable | Default | Description |
+| --- | --- | --- |
+| `NOSTRADIFFMUS_MAX_DIFF_CHARS` | 500000 | Hard limit - reject diffs larger than this (in characters) |
+| `NOSTRADIFFMUS_COPILOT_CHARS` | 4000 | Maximum characters sent to Copilot for analysis |
+| `NOSTRADIFFMUS_MAX_LINES` | 10000 | Maximum lines processed during signal extraction |
+| `NOSTRADIFFMUS_WARN_THRESHOLD` | 100000 | Warn user when diff exceeds this size (in characters) |
+| `NOSTRADIFFMUS_GIT_TIMEOUT_MS` | 30000 | Git command timeout in milliseconds (30 seconds) |
+| `NOSTRADIFFMUS_USE_COPILOT` | 1 | Set to `0` to disable Copilot integration |
+| `NOSTRADIFFMUS_DEBUG` | - | Set to `1` to enable debug logging |
+
+Example:
+```bash
+NOSTRADIFFMUS_WARN_THRESHOLD=50000 nostradiffmus --staged
+```
+
 🔌 GitHub Copilot CLI Integration
 
 Nostradiffmus can optionally use GitHub Copilot CLI to:
@@ -179,6 +207,7 @@ To disable it explicitly:
 NOSTRADIFFMUS_USE_COPILOT=0 nostradiffmus --staged
 
 📦 Example JSON Output
+```json
 {
   "predictedBugCategory": "AsyncStateRace",
   "confidence": 0.78,
@@ -187,8 +216,15 @@ NOSTRADIFFMUS_USE_COPILOT=0 nostradiffmus --staged
     "Shared mutable state detected",
     "Error handling removed"
   ],
-  "advice": "Review promise chains and shared state updates."
+  "advice": "Review promise chains and shared state updates.",
+  "metadata": {
+    "diffSizeChars": 2847,
+    "diffSizeKB": 2.8,
+    "wasTruncatedForCopilot": false,
+    "filesChanged": 3
+  }
 }
+```
 
 🧪 Future Ideas
 

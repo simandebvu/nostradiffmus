@@ -15,7 +15,7 @@ export const runAnalysis = (options: CliOptions): Prediction => {
   const files = getDiffFiles(diff);
   const signals = extractSignals(diff, files);
   const classification = classify(signals);
-  const enrichment = maybeGetCopilotEnrichment(diff);
+  const { enrichment, truncationMetadata } = maybeGetCopilotEnrichment(diff);
 
   const baseAdvice = buildAdvice(classification.predictedBugCategory);
   const advice = enrichment ? `${baseAdvice} Copilot note: ${enrichment}` : baseAdvice;
@@ -25,6 +25,12 @@ export const runAnalysis = (options: CliOptions): Prediction => {
     confidence: classification.confidence,
     signals: signals.map((signal) => signal.description),
     advice,
-    categoryLabel: classification.categoryLabel
+    categoryLabel: classification.categoryLabel,
+    metadata: {
+      diffSizeChars: diff.length,
+      diffSizeKB: Math.round((diff.length / 1024) * 10) / 10,
+      wasTruncatedForCopilot: truncationMetadata.wasTruncated,
+      filesChanged: files.length
+    }
   };
 };

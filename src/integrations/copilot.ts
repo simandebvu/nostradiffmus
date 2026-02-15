@@ -1,4 +1,6 @@
 import { spawnSync } from "node:child_process";
+import { getLimits } from "../config/limits";
+import { truncateDiff, TruncationResult } from "../git/diff";
 
 const hasCommand = (command: string, args: string[]): boolean => {
   const probe = spawnSync(command, args, { encoding: "utf-8" });
@@ -54,19 +56,35 @@ const debugLog = (message: string): void => {
   }
 };
 
-export const maybeGetCopilotEnrichment = (diff: string): string | undefined => {
+export interface CopilotEnrichmentResult {
+  enrichment: string | undefined;
+  truncationMetadata: {
+    wasTruncated: boolean;
+    originalSize: number;
+    truncatedSize: number;
+  };
+}
+
+export const maybeGetCopilotEnrichment = (diff: string): CopilotEnrichmentResult => {
   const copilotPreference = (process.env.NOSTRADIFFMUS_USE_COPILOT ?? "1").toLowerCase();
   const copilotDisabled = copilotPreference === "0" || copilotPreference === "false" || copilotPreference === "off";
 
+  const limits = getLimits();
+  const { truncated, wasTruncated, originalSize, truncatedSize } = truncateDiff(diff, limits.maxCopilotChars);
+
   if (copilotDisabled) {
     debugLog("copilot disabled by NOSTRADIFFMUS_USE_COPILOT");
-    return undefined;
+    return {
+      enrichment: undefined,
+      truncationMetadata: { wasTruncated, originalSize, truncatedSize }
+    };
   }
 
   const prompt = [
     "Analyze this git diff and provide a concise bug-risk advisory in 1-2 sentences:",
-    diff.slice(0, 4000)
-  ].join("\n\n");
+    wasTruncated ? "[Note: Diff truncated for size]" : "",
+    truncated
+  ].filter(Boolean).join("\n\n");
 
   const promptArgs = ["-p", prompt, "--allow-all-tools", "--no-ask-user", "--stream", "off", "--no-color", "-s"];
   debugLog(`using timeout=${resolveTimeoutMs()}ms`);
@@ -98,8 +116,14 @@ export const maybeGetCopilotEnrichment = (diff: string): string | undefined => {
 
   if (!success) {
     debugLog("all copilot attempts failed; falling back to heuristics");
-    return undefined;
+    return {
+      enrichment: undefined,
+      truncationMetadata: { wasTruncated, originalSize, truncatedSize }
+    };
   }
 
-  return normalizeCopilotText(readSuggestionText(success) ?? "");
+  return {
+    enrichment: normalizeCopilotText(readSuggestionText(success) ?? ""),
+    truncationMetadata: { wasTruncated, originalSize, truncatedSize }
+  };
 };
